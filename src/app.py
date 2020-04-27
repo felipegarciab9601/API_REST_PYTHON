@@ -79,5 +79,33 @@ def delete_task(id):
 def index():
     return jsonify({'message': 'Welcome to my API'})
 
+@app.route('/tasks/<id>', methods=['PUT'])
+def update_task(id):
+  task = Task.query.get(id)
+
+  title = request.json['title']
+  description = request.json['description']
+
+  task.title = title
+  task.description = description
+
+  db.session.commit()
+
+
+@app.route('/tasks/<id>', methods=['DELETE'])
+def delete_task(id):
+  task = Task.query.get(id)
+  db.session.delete(task)
+  db.session.commit()
+  return task_schema.jsonify(task)
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return jsonify({'message': 'Welcome to my API'})
+
+
+  return task_schema.jsonify(task)
+
 if __name__ == "__main__":
     app.run(debug=True)
